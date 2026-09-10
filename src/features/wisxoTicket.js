@@ -593,7 +593,7 @@ async function rateTicket(interaction) {
 
 export async function sendTicketPanel(channel, imageUrl = null) {
   const embed = new EmbedBuilder()
-    .setAuthor({ name: 'zip' })
+    .setAuthor({ name: 'Sistema RolePlay' })
     .setTitle('Ayuda y Soporte')
     .setDescription('Abre un ticket interactuando con el menú de abajo.')
     .setColor(0x000000)
