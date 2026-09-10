@@ -11,22 +11,9 @@ export const botConfig = {
   // - "invisible" = appears offline
   presence: {
     // Current online state shown on Discord.
-    status: "dnd",
-
-    // Activity lines shown under the bot name.
-    // `type` number mapping from Discord:
-    // 0 = Playing
-    // 1 = Streaming
-    // 2 = Listening
-    // 3 = Watching
-    // 4 = Custom
-    // 5 = Competing
-    activities: [
-      {
-        name: "Custom Status", // required by Discord API, not shown in the client
-        type: 4,               // Custom
-      },
-    ],
+    status: "online",
+    // Sin mensaje debajo del nombre del bot
+    activities: [],
   },
 
   // =========================
@@ -36,19 +23,14 @@ export const botConfig = {
     // Bot owner user IDs (comma-separated in OWNER_IDS env var).
     // Owners can access owner/admin-level bot commands.
     owners: process.env.OWNER_IDS?.split(",").map((id) => id.trim()).filter(Boolean) || [],
-
     // Default wait time between command uses (in seconds).
     defaultCooldown: 3,
-
     // If true, old commands are removed before re-registering.
     deleteCommands: false,
-
     // Optional server ID retained for tutorial compatibility; not used for command registration.
     testGuildId: process.env.TEST_GUILD_ID,
-
     // When true (or MAINTENANCE_MODE=true), only bot owners can run commands.
     maintenanceMode: process.env.MAINTENANCE_MODE === "true",
-
     // Command prefix for text-based commands (e.g., "!" for "!ping").
     // Supports both slash commands and prefix commands.
     prefix: process.env.PREFIX || "!",
@@ -64,23 +46,18 @@ export const botConfig = {
       { question: "How old are you?", required: true },
       { question: "Why do you want to join?", required: true },
     ],
-
     // Embed colors by application status.
     statusColors: {
       pending: "#FFA500",
       approved: "#00FF00",
       denied: "#FF0000",
     },
-
     // How long users must wait before submitting another application (hours).
     applicationCooldown: 24,
-
     // Auto-delete denied applications after this many days.
     deleteDeniedAfter: 7,
-
     // Auto-delete approved applications after this many days.
     deleteApprovedAfter: 30,
-
     // Role IDs allowed to manage applications.
     managerRoles: [], // Will be populated from environment or database
   },
@@ -94,18 +71,15 @@ export const botConfig = {
       // Main brand colors.
       primary: "#336699",
       secondary: "#2F3136",
-
       // Standard status colors for success/error/warning/info messages.
       success: "#57F287",
       error: "#ED4245",
       warning: "#FEE75C",
       info: "#3498DB",
-
       // Neutral utility colors.
       light: "#FFFFFF",
       dark: "#202225",
       gray: "#99AAB5",
-
       // Discord-style palette shortcuts.
       blurple: "#5865F2",
       green: "#57F287",
@@ -113,7 +87,6 @@ export const botConfig = {
       fuchsia: "#EB459E",
       red: "#ED4245",
       black: "#000000",
-
       // Feature-specific colors.
       giveaway: {
         active: "#57F287",
@@ -128,7 +101,6 @@ export const botConfig = {
       economy: "#F1C40F",
       birthday: "#E91E63",
       moderation: "#9B59B6",
-
       // Ticket priority color mapping.
       priority: {
         none: "#95A5A6",
@@ -166,24 +138,18 @@ export const botConfig = {
       // Currency symbol shown in balances.
       symbol: "$",
     },
-
     // Starting balance for new users.
     startingBalance: 0,
-
     // Maximum bank amount before upgrades (if upgrades are used).
     baseBankCapacity: 100000,
-
     // Daily reward amount.
     dailyAmount: 100,
-
     // Work command random payout range.
     workMin: 10,
     workMax: 100,
-
     // Beg command random payout range.
     begMin: 5,
     begMax: 50,
-
     // Command cooldowns (milliseconds).
     cooldowns: {
       daily: 24 * 60 * 60 * 1000,
@@ -191,10 +157,8 @@ export const botConfig = {
       crime: 2 * 60 * 60 * 1000,
       rob: 4 * 60 * 60 * 1000,
     },
-
     // Chance to succeed when robbing (0.4 = 40%).
     robSuccessRate: 0.4,
-
     // Jail time after failed rob (milliseconds).
     // 3600000 = 1 hour.
     robFailJailTime: 3600000,
@@ -205,7 +169,6 @@ export const botConfig = {
   // =========================
   // Add shop defaults here when needed.
   shop: {
-
   },
 
   // =========================
@@ -214,10 +177,8 @@ export const botConfig = {
   tickets: {
     // Category ID where new tickets are created (null = no forced category).
     defaultCategory: null,
-
     // Role IDs allowed to manage/support tickets.
     supportRoles: [],
-
     // Priority options users/staff can assign.
     priorities: {
       none: {
@@ -246,13 +207,10 @@ export const botConfig = {
         label: "Urgent",
       },
     },
-
     // Default priority for new tickets.
     defaultPriority: "none",
-
     // Category ID where closed tickets are archived.
     archiveCategory: null,
-
     // Channel ID where ticket logs are sent.
     logChannel: null,
   },
@@ -264,20 +222,16 @@ export const botConfig = {
     // Default giveaway duration in milliseconds.
     // 86400000 = 24 hours.
     defaultDuration: 86400000,
-
     // Allowed winner count range.
     minimumWinners: 1,
     maximumWinners: 10,
-
     // Allowed giveaway duration range in milliseconds.
     // 300000 = 5 minutes.
     minimumDuration: 300000,
     // 2592000000 = 30 days.
     maximumDuration: 2592000000,
-
     // Role IDs allowed to host giveaways.
     allowedRoles: [],
-
     // Role IDs that bypass giveaway restrictions.
     bypassRoles: [],
   },
@@ -288,10 +242,8 @@ export const botConfig = {
   birthday: {
     // Role ID given to users on their birthday.
     defaultRole: null,
-
     // Channel ID where birthday announcements are posted.
     announcementChannel: null,
-
     // Timezone used to calculate birthday dates.
     timezone: "UTC",
   },
@@ -302,10 +254,8 @@ export const botConfig = {
   verification: {
     // Message shown when posting the verification panel.
     defaultMessage: "Click the button below to verify yourself and gain access to the server!",
-
     // Text on the verification button.
     defaultButtonText: "Verify",
-
     // Automatic verification behavior.
     autoVerify: {
       // How automatic verification decides who is auto-approved:
@@ -313,22 +263,17 @@ export const botConfig = {
       // - "account_age" = account must be older than set days
       // - "server_size" = auto-verify everyone only in smaller servers
       defaultCriteria: "none",
-
       // Days used when `defaultCriteria` is `account_age`.
       defaultAccountAgeDays: 7,
-
       // Member count threshold used when `defaultCriteria` is `server_size`.
       // Example: 1000 means auto-verify if server has fewer than 1000 members.
       serverSizeThreshold: 1000,
-
       // Allowed safety limits for account-age requirements.
       // 1 = minimum day, 365 = maximum days.
       minAccountAge: 1,
       maxAccountAge: 365,
-
       // If true, user receives a DM after verification.
       sendDMNotification: true,
-
       // Human-readable descriptions for each criteria mode.
       criteria: {
         account_age: "Account must be older than specified days",
@@ -336,18 +281,14 @@ export const botConfig = {
         none: "All users immediately"
       }
     },
-
     // Minimum time between verification attempts (milliseconds).
     // 5000 = 5 seconds.
     verificationCooldown: 5000,
-
     // Maximum failed attempts allowed inside the time window below.
     maxVerificationAttempts: 3,
-
     // Time window for counting attempts (milliseconds).
     // 60000 = 1 minute.
     attemptWindow: 60000,
-
     // In-memory safety limits (helps avoid unbounded memory growth).
     maxCooldownEntries: 10000,
     maxAttemptEntries: 10000,
@@ -453,18 +394,15 @@ export const botConfig = {
     moderation: true,
     logging: true,
     welcome: true,
-
     // Community engagement systems.
     tickets: true,
     giveaways: true,
     birthday: true,
     counter: true,
-
     // Security and self-service systems.
     verification: true,
     reactionRoles: true,
     joinToCreate: true,
-
     // Utility/quality-of-life modules.
     voice: true,
     search: true,
@@ -498,10 +436,7 @@ export function validateConfig(config) {
   }
 
   if (process.env.NODE_ENV === 'production') {
-    // A full connection URL (DATABASE_URL / POSTGRES_URL) satisfies all Postgres
-    // requirements, matching how src/config/database/postgres.js resolves the pool config.
     const hasConnectionUrl = Boolean(process.env.POSTGRES_URL || process.env.DATABASE_URL);
-
     if (!hasConnectionUrl) {
       if (!process.env.POSTGRES_HOST) {
         errors.push("PostgreSQL connection is required in production (set DATABASE_URL/POSTGRES_URL, or POSTGRES_HOST)");
@@ -567,7 +502,6 @@ export function isBotOwner(userId) {
   if (!userId) {
     return false;
   }
-
   return getBotOwners().includes(String(userId));
 }
 
@@ -577,11 +511,9 @@ export function isMaintenanceMode() {
 
 export function getBotMessage(key, replacements = {}) {
   let message = botConfig.messages?.[key] || key;
-
   for (const [placeholder, value] of Object.entries(replacements)) {
     message = message.replace(new RegExp(`\\{${placeholder}\\}`, "g"), String(value));
   }
-
   return message;
 }
 
@@ -589,22 +521,18 @@ export function isFeatureEnabled(featureKey) {
   if (!featureKey) {
     return true;
   }
-
   return botConfig.features?.[featureKey] !== false;
 }
 
 export function isCommandCategoryEnabled(category) {
   const normalized = normalizeCategoryKey(category);
-
   if (!normalized || normalized === "core") {
     return true;
   }
-
   const featureKey = COMMAND_CATEGORY_FEATURE_MAP[normalized];
   if (!featureKey) {
     return true;
   }
-
   return isFeatureEnabled(featureKey);
 }
 
@@ -621,10 +549,8 @@ export function getDefaultApplicationQuestions() {
 }
 
 export function getColor(path, fallback = "#99AAB5") {
-  
   if (typeof path === "number") return path;
   if (typeof path === "string" && path.startsWith("#")) {
-    
     return parseInt(path.replace("#", ""), 16);
   }
   const result = path
@@ -633,7 +559,6 @@ export function getColor(path, fallback = "#99AAB5") {
       (obj, key) => (obj && obj[key] !== undefined ? obj[key] : fallback),
       botConfig.embeds.colors,
     );
-  
   if (typeof result === "string" && result.startsWith("#")) {
     return parseInt(result.replace("#", ""), 16);
   }
