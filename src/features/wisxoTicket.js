@@ -37,6 +37,12 @@ const TICKET_OPTIONS = [
     value: 'reportes',
   },
   {
+    label: 'Organizacion',
+    description: 'Temas de organizacion',
+    emoji: '🔫',
+    value: 'organizacion',
+  },
+  {
     label: 'Donacion',
     description: 'Consultas sobre donaciones',
     emoji: '💎',
@@ -182,6 +188,14 @@ function welcomeMessage(value, member) {
         `• Usuario a reportar (ID o @)\n` +
         `• Qué pasó\n` +
         `• Pruebas (fotos/videos) si tienes`
+      );
+
+     case 'organizacion':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Organización** 🔫\n` +
+        `Explica tu solicitud relacionada con organización.\n` +
+        `Incluye detalles para que el staff pueda ayudarte.`
       );
 
     case 'donacion':
