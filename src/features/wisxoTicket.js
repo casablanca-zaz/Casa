@@ -31,16 +31,40 @@ const TICKET_OPTIONS = [
     value: 'soporte',
   },
   {
-    label: 'PartnerShip',
-    description: 'Solicitudes de partnership / alianza',
-    emoji: '🤝',
-    value: 'partnership',
+    label: 'Reportes',
+    description: 'Reportar un usuario o problema',
+    emoji: '🛑',
+    value: 'reportes',
   },
   {
-    label: 'Leaker',
-    description: 'Solicitudes de Leaker',
-    emoji: '🍁',
-    value: 'leaker',
+    label: 'Donacion',
+    description: 'Consultas sobre donaciones',
+    emoji: '💎',
+    value: 'donacion',
+  },
+  {
+    label: 'CK / PKT',
+    description: 'Solicitudes de CK / PKT',
+    emoji: '💀',
+    value: 'ck-pkt',
+  },
+  {
+    label: 'Reporte A Staff',
+    description: 'Reportar a un miembro del staff',
+    emoji: '⚠️',
+    value: 'reporte-staff',
+  },
+  {
+    label: 'Streamers',
+    description: 'Solicitudes de streamers',
+    emoji: '🎥',
+    value: 'streamers',
+  },
+  {
+    label: 'Postulacion',
+    description: 'Postulaciones al servidor / staff',
+    emoji: '📝',
+    value: 'postulacion',
   },
 ];
 
@@ -143,20 +167,59 @@ function welcomeMessage(value, member) {
   switch (value) {
     case 'soporte':
       return `Bienvenid@ ${member} a Tickets de soporte. Por favor, describe tu problema.`;
-    case 'partnership':
-      return `Bienvenid@ ${member} aqui en este ticket puedes hacer alianza con nosotros.`;
-    case 'leaker':
+
+    case 'reportes':
       return (
         `Bienvenid@ ${member}.\n\n` +
-        `**Solicitud de Leaker**\n` +
-        `Responde estas preguntas en el ticket:\n\n` +
-        `**1.** ¿Por qué quieres el rol de leaker?\n` +
-        `**2.** ¿Qué tipo de contenido subirías? (clips, videos, etc.)\n` +
-        `**3.** ¿Con qué frecuencia puedes subir?\n` +
-        `**4.** ¿Aceptas no hacer spam y seguir las reglas del server? (Sí/No)\n` +
-        `**5.** ¿Entiendes que el staff puede quitarte el rol si rompes las reglas? (Sí/No)\n\n` +
-        `Cuando termines, espera a que el staff revise tu postulación.`
+        `**Reporte** 🛑\n` +
+        `Indica:\n` +
+        `• Usuario a reportar (ID o @)\n` +
+        `• Qué pasó\n` +
+        `• Pruebas (fotos/videos) si tienes`
       );
+
+    case 'donacion':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Donación** 💎\n` +
+        `Cuéntanos en qué podemos ayudarte con tu donación.`
+      );
+
+    case 'ck-pkt':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**CK / PKT** 💀\n` +
+        `Explica tu solicitud de CK o PKT con el mayor detalle posible.`
+      );
+
+    case 'reporte-staff':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Reporte a Staff** ⚠️\n` +
+        `Indica:\n` +
+        `• Staff a reportar\n` +
+        `• Motivo\n` +
+        `• Pruebas si tienes`
+      );
+
+    case 'streamers':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Streamers** 🎥\n` +
+        `Indica tu plataforma, link del canal y por qué quieres el rol/beneficio de streamer.`
+      );
+
+    case 'postulacion':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Postulación** 📝\n` +
+        `Responde:\n` +
+        `**1.** ¿A qué te postulas?\n` +
+        `**2.** ¿Por qué te deberíamos aceptar?\n` +
+        `**3.** ¿Tienes experiencia? ¿Dónde?\n` +
+        `**4.** ¿Cuánto tiempo puedes dedicar?`
+      );
+
     default:
       return `Bienvenid@ ${member}. Describe tu solicitud.`;
   }
@@ -439,7 +502,6 @@ async function closeTicket(interaction) {
 
   const feedbackChannelId = getTicketFeedbackChannelId(interaction.guild.id);
 
-  // Sin feedback → cierra directo
   if (!feedbackChannelId) {
     await interaction.reply({
       content: '🔒 Ticket cerrado. Eliminando canal...',
@@ -451,7 +513,6 @@ async function closeTicket(interaction) {
     return true;
   }
 
-  // Con feedback → estrellas
   const rateEmbed = new EmbedBuilder()
     .setAuthor({ name: 'XF L' })
     .setTitle('¿Cómo calificas la atención?')
