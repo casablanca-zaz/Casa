@@ -21,7 +21,7 @@ const CLOSE_ID = 'wisxo_close_ticket_btn';
 const RATE_PREFIX = 'wisxo_rate_';
 
 const BANNER_URL =
-  'https://cdn.discordapp.com/icons/1416544949083836458/a_393a715d84e57bf72283691e1fea0051.gif?animated=true&size=1024';
+  'https://cdn.discordapp.com/attachments/1375843317295747235/1547360088530878575/sistemarp_animado.gif?ex=6aa3cba1&is=6aa27a21&hm=5791997e418c252537450f03a14b9a2142c6c5614c74df42271eb56c67be1991&=';
 
 const TICKET_OPTIONS = [
   {
