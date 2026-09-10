@@ -49,6 +49,12 @@ const TICKET_OPTIONS = [
     value: 'ck-pkt',
   },
   {
+    label: 'Apelacion',
+    description: 'Apelar un ban o sancion',
+    emoji: '⚖️',
+    value: 'apelacion',
+  },
+  {
     label: 'Reporte A Staff',
     description: 'Reportar a un miembro del staff',
     emoji: '⚠️',
@@ -190,6 +196,18 @@ function welcomeMessage(value, member) {
         `Bienvenid@ ${member}.\n\n` +
         `**CK / PKT** 💀\n` +
         `Explica tu solicitud de CK o PKT con el mayor detalle posible.`
+      );
+
+    case 'apelacion':
+      return (
+        `Bienvenid@ ${member}.\n\n` +
+        `**Apelación** ⚖️\n` +
+        `Si fuiste baneado o sancionado, responde:\n\n` +
+        `**1.** ¿Cuál es tu ID de Discord?\n` +
+        `**2.** ¿Qué sanción recibiste? (ban, warn, etc.)\n` +
+        `**3.** ¿Por qué crees que debería levantarse?\n` +
+        `**4.** ¿Tienes pruebas o algo que agregar?\n\n` +
+        `El staff revisará tu caso.`
       );
 
     case 'reporte-staff':
