@@ -60,18 +60,10 @@ export async function handleWlMessage(message) {
 
   const successEmoji = cfg.successEmoji || '✅';
   const youngEmoji = cfg.youngEmoji || '⚠️';
+  const age = accountAgeDays(message.author);
 
   try {
-    // Dar rol si no lo tiene
-    if (!member.roles.cache.has(cfg.roleId)) {
-      await member.roles.add(cfg.roleId);
-    }
-
-    // Reacción de éxito
-    await message.react(successEmoji).catch(() => {});
-
-    // Cuenta nueva (< 50 días)
-    const age = accountAgeDays(message.author);
+    // Cuenta nueva (< 50 días): NO da el rol, solo ⚠️ + DM
     if (age < MIN_ACCOUNT_DAYS) {
       await message.react(youngEmoji).catch(() => {});
 
@@ -81,14 +73,20 @@ export async function handleWlMessage(message) {
         'y que no sea alguien spoofeado. Espero comprendas que esto es parte del sistema de antispoof.';
 
       await message.author.send(dmText).catch(() => {
-        // Si tiene DMs cerrados, avisa en el canal (opcional)
         message.channel
           .send({
             content: `${message.author}, no pude enviarte DM. Ábrelos o ve a sala de espera para verificación (cuenta nueva).`,
           })
           .catch(() => {});
       });
+      return;
     }
+
+    // Cuenta OK (≥ 50 días): da el rol + ✅
+    if (!member.roles.cache.has(cfg.roleId)) {
+      await member.roles.add(cfg.roleId);
+    }
+    await message.react(successEmoji).catch(() => {});
   } catch (err) {
     console.error('[wlRole]', err.message);
     await message
