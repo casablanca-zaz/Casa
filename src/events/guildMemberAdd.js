@@ -1,8 +1,6 @@
-import { Events, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
-import { getColor, botConfig } from '../config/bot.js';
+import { Events } from 'discord.js';
 import { getGuildConfig } from '../services/config/guildConfig.js';
 import { getWelcomeConfig } from '../utils/database.js';
-import { formatWelcomeMessage } from '../utils/welcome.js';
 import { logEvent, EVENT_TYPES } from '../services/loggingService.js';
 import {
   getServerCounters,
@@ -20,7 +18,7 @@ export default {
     try {
       const { guild, user } = member;
 
-      // Bienvenida custom (con imagen) — /welcomesetup
+      // SOLO bienvenida nueva (/welcomesetup)
       try {
         await handleCustomWelcome(member);
       } catch (error) {
@@ -29,81 +27,8 @@ export default {
 
       const config = await getGuildConfig(member.client, guild.id);
       const welcomeConfig = await getWelcomeConfig(member.client, guild.id);
-      const welcomeChannelId = welcomeConfig?.channelId;
 
-      if (welcomeConfig?.enabled && welcomeChannelId) {
-        const channel = guild.channels.cache.get(welcomeChannelId);
-        const me = guild.members.me;
-        const permissions =
-          channel?.isTextBased?.() && me ? channel.permissionsFor(me) : null;
-
-        if (
-          permissions?.has([
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.SendMessages,
-          ])
-        ) {
-          const formatData = { user, guild, member };
-          const welcomeMessage = formatWelcomeMessage(
-            welcomeConfig.welcomeMessage ||
-              welcomeConfig.welcomeEmbed?.description ||
-              botConfig.welcome?.defaultWelcomeMessage ||
-              'Welcome {user} to {server}!',
-            formatData
-          );
-          const messageContent = welcomeConfig.welcomePing
-            ? user.toString()
-            : null;
-          const embedTitle = formatWelcomeMessage(
-            welcomeConfig.welcomeEmbed?.title || '🎉 Welcome!',
-            formatData
-          );
-          const embedFooter = welcomeConfig.welcomeEmbed?.footer
-            ? formatWelcomeMessage(welcomeConfig.welcomeEmbed.footer, formatData)
-            : `Welcome to ${guild.name}!`;
-          const canEmbed = permissions.has(PermissionFlagsBits.EmbedLinks);
-
-          if (!canEmbed) {
-            await channel.send({
-              content: messageContent || welcomeMessage,
-            });
-          } else {
-            const embed = new EmbedBuilder()
-              .setColor(
-                welcomeConfig.welcomeEmbed?.color || getColor('success')
-              )
-              .setTitle(embedTitle)
-              .setDescription(welcomeMessage)
-              .setThumbnail(user.displayAvatarURL())
-              .addFields(
-                {
-                  name: 'User',
-                  value: `${user.tag} (${user.id})`,
-                  inline: true,
-                },
-                {
-                  name: 'Member Count',
-                  value: guild.memberCount.toString(),
-                  inline: true,
-                }
-              )
-              .setTimestamp()
-              .setFooter({ text: embedFooter });
-
-            if (welcomeConfig.welcomeImage) {
-              embed.setImage(welcomeConfig.welcomeImage);
-            } else if (welcomeConfig.welcomeEmbed?.image?.url) {
-              embed.setImage(welcomeConfig.welcomeEmbed.image.url);
-            }
-
-            await channel.send({
-              content: messageContent,
-              embeds: [embed],
-            });
-          }
-        }
-      }
-
+      // Auto-rol del sistema viejo (si lo usabas) — si no quieres roles al entrar, borra este bloque
       if (welcomeConfig?.roleIds && welcomeConfig.roleIds.length > 0) {
         const delay = welcomeConfig.autoRoleDelay || 0;
         const singleRoleId = welcomeConfig.roleIds[0];
@@ -111,18 +36,12 @@ export default {
         if (delay > 0) {
           const timeout = setTimeout(async () => {
             const role = guild.roles.cache.get(singleRoleId);
-            if (role) {
-              await assignRoleSafely(member, role);
-            }
+            if (role) await assignRoleSafely(member, role);
           }, delay * 1000);
-          if (typeof timeout.unref === 'function') {
-            timeout.unref();
-          }
+          if (typeof timeout.unref === 'function') timeout.unref();
         } else {
           const role = guild.roles.cache.get(singleRoleId);
-          if (role) {
-            await assignRoleSafely(member, role);
-          }
+          if (role) await assignRoleSafely(member, role);
         }
       }
 
@@ -188,9 +107,6 @@ export default {
           await dbSetBirthday(member.client, guild.id, user.id, month, day);
           delete backup[user.id];
           await member.client.db.set(backupKey, backup);
-          logger.debug(
-            `Birthday restored for user ${user.id} in guild ${guild.id}`
-          );
         }
       } catch (error) {
         logger.debug('Error restoring birthday on member join:', error);
@@ -222,18 +138,11 @@ async function handleVerification(member, guild, verificationConfig, client) {
         roleName: result.roleName,
         criteria: result.criteria,
       });
-    } else {
-      logger.debug('User not auto-verified on join', {
-        guildId: guild.id,
-        userId: member.id,
-        reason: result.reason,
-      });
     }
   } catch (error) {
     logger.error('Error in auto-verification for member', {
       guildId: guild.id,
       userId: member.id,
-      userTag: member.user.tag,
       error: error.message,
     });
   }
